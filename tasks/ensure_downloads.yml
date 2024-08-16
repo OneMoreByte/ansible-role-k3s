@@ -45,7 +45,7 @@
 - name: Ensure k3s binary is downloaded
   ansible.builtin.get_url:
     url: "{{ k3s_binary_url }}"
-    dest: "{{ k3s_install_dir }}/k3s-{{ k3s_release_version }}"
+    dest: "{{ k3s_install_dir }}/{{ 'k3s-' + k3s_release_version if k3s_install_links_k3s else 'k3s' }}"
     checksum: "sha256:{{ k3s_hash_sum }}"
     mode: 0755
   become: "{{ k3s_become }}"

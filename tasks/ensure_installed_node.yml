@@ -1,6 +1,6 @@
 ---
 
-- name: Ensure k3s is linked into the installation destination
+- name: Ensure k3s is linked into the installation destination (linked k3s)
   ansible.builtin.file:
     src: "{{ k3s_install_dir }}/k3s-{{ k3s_release_version }}"
     dest: "{{ k3s_install_dir }}/{{ item }}"
@@ -12,7 +12,23 @@
     - kubectl
     - crictl
     - ctr
-  when: not ansible_check_mode
+  when: not ansible_check_mode and k3s_install_links_k3s
+  notify:
+    - "Restart k3s {{ k3s_service_handler[ansible_service_mgr] }}"
+  become: "{{ k3s_become }}"
+
+- name: Ensure k3s is linked into the installation destination (unlinked k3s)
+  ansible.builtin.file:
+    src: "{{ k3s_install_dir }}/k3s"
+    dest: "{{ k3s_install_dir }}/{{ item }}"
+    state: "{{ 'hard' if k3s_install_hard_links else 'link' }}"
+    force: "{{ k3s_install_hard_links }}"
+    mode: 0755
+  loop:
+    - kubectl
+    - crictl
+    - ctr
+  when: not ansible_check_mode and not k3s_install_links_k3s
   notify:
     - "Restart k3s {{ k3s_service_handler[ansible_service_mgr] }}"
   become: "{{ k3s_become }}"

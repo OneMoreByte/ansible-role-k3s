@@ -79,6 +79,7 @@ consistency. These are generally cluster-level configuration.
 | `k3s_api_url`                        | URL for K3S updates API.                                                                   | https://update.k3s.io          |
 | `k3s_install_dir`                    | Installation directory for k3s.                                                            | `/usr/local/bin`               |
 | `k3s_install_hard_links`             | Install using hard links rather than symbolic links.                                       | `false`                        |
+| `k3s_install_links_k3s`              | Boolean to control if `{k3s_install_dir}/k3s` is the binary or a link.                     | `true`                         |
 | `k3s_server_config_yaml_d_files`     | A flat list of templates to supplement the `k3s_server` configuration.                     | []                             |
 | `k3s_agent_config_yaml_d_files`      | A flat list of templates to supplement the `k3s_agent` configuration.                      | []                             |
 | `k3s_server_manifests_urls`          | A list of URLs to deploy on the primary control plane. Read notes below.                   | []                             |
